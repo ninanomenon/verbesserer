@@ -2,6 +2,12 @@ package tools
 
 import "fmt"
 
+type Tool interface {
+	Name() string
+	Description() string
+	Run() (*[]ReportFormat, error)
+}
+
 // Run function takes a slice of `Tool` and executes the
 // `Run` function of each.
 func Run(tools []Tool) {
