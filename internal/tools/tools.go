@@ -9,7 +9,9 @@ func Run(tools []Tool) {
 		output, err := tool.Run()
 		if err != nil {
 			fmt.Printf("Error while running %s: %s\n", tool.Name(), err)
+			continue
 		}
-		fmt.Printf("Result of %s: %s\n", tool.Name(), output)
+
+		fmt.Printf("Result of %s: %v\n", tool.Name(), output)
 	}
 }
