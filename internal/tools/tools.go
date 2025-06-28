@@ -5,6 +5,7 @@ import "fmt"
 type Tool interface {
 	Name() string
 	Description() string
+	Preflight() error
 	Run() (*[]ReportFormat, error)
 }
 
