@@ -15,11 +15,12 @@ func run() {
 		Name:  "Verbesserer",
 		Usage: "makes it easier to make incremental improvements to your codebase!",
 		Action: func(ctx context.Context, command *cli.Command) error {
-			r := ruff.Ruff{}
-			var t []tools.Tool
-			t = append(t, r)
+			ruff := ruff.Ruff{}
 
-			tools.Run(t)
+			var toolSlice []tools.Tool
+			toolSlice = append(toolSlice, ruff)
+
+			tools.Run(toolSlice)
 
 			return nil
 		},

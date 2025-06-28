@@ -18,6 +18,7 @@ func (r Ruff) Description() string {
 	return "Ruff python bla foo"
 }
 
+// Run - runs `ruff check` and returns a code quality report
 func (r Ruff) Run() (*[]tools.ReportFormat, error) {
 	// we use the output format gitlab here to parse the json later
 	ruff := exec.Command("ruff", "check", "--output-format", "gitlab")
