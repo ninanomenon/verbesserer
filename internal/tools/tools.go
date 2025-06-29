@@ -1,24 +1,26 @@
 package tools
 
-import "fmt"
+type Result struct {
+	Description string   `json:"description"`
+	CheckName   string   `json:"check_name"`
+	Fingerprint string   `json:"fingerprint"`
+	Location    Location `json:"location"`
+	Severity    string   `json:"severity"`
+}
+
+type Location struct {
+	Lines Lines  `json:"lines"`
+	Path  string `json:"path"`
+}
+
+type Lines struct {
+	Begin int `json:"begin"`
+	End   int `json:"end"`
+}
 
 type Tool interface {
 	Name() string
 	Description() string
 	Preflight() error
-	Run() (*[]ReportFormat, error)
-}
-
-// Run function takes a slice of `Tool` and executes the
-// `Run` function of each.
-func Run(tools []Tool) {
-	for _, tool := range tools {
-		output, err := tool.Run()
-		if err != nil {
-			fmt.Printf("Error while running %s: %s\n", tool.Name(), err)
-			continue
-		}
-
-		fmt.Printf("Result of %s: %v\n", tool.Name(), output)
-	}
+	Run() (*[]Result, error)
 }

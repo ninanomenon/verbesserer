@@ -26,7 +26,7 @@ func (r Ruff) Preflight() error {
 }
 
 // Run - runs `ruff check` and returns a code quality report
-func (r Ruff) Run() (*[]tools.ReportFormat, error) {
+func (r Ruff) Run() (*[]tools.Result, error) {
 	// we use the output format gitlab here to parse the json later
 	ruff := exec.Command("ruff", "check", "--output-format", "gitlab", r.CheckPath)
 
@@ -36,7 +36,7 @@ func (r Ruff) Run() (*[]tools.ReportFormat, error) {
 		return nil, fmt.Errorf("Ruff: unexpected error while running command: %w", err)
 	}
 
-	var report []tools.ReportFormat
+	var report []tools.Result
 	err = json.Unmarshal(output, &report)
 	if err != nil {
 		return nil, err

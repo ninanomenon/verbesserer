@@ -2,7 +2,9 @@ package commands
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/ninanomenon/verbesserer/internal"
 	"github.com/ninanomenon/verbesserer/internal/tools"
 	"github.com/ninanomenon/verbesserer/internal/tools/ruff"
 	"github.com/urfave/cli/v3"
@@ -26,7 +28,13 @@ func runAction(ctx context.Context, command *cli.Command) error {
 	var toolSlice []tools.Tool
 	toolSlice = append(toolSlice, ruff)
 
-	tools.Run(toolSlice)
+	report, _ := internal.Run(toolSlice)
+	for _, r := range *report {
+		fmt.Printf("Reports: %#v\n", r)
+		for _, rr := range *r.Issues {
+			fmt.Printf("Issue: %#v\n", rr)
+		}
+	}
 
 	return nil
 }

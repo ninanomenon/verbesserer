@@ -39,7 +39,7 @@ func TestRuff_Run(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		want    *[]tools.ReportFormat
+		want    *[]tools.Result
 		wantErr bool
 	}{
 		{
@@ -47,7 +47,7 @@ func TestRuff_Run(t *testing.T) {
 			fields: fields{
 				CheckPath: "test_data/",
 			},
-			want: &[]tools.ReportFormat{
+			want: &[]tools.Result{
 				{
 					Description: "Undefined name `Float`",
 					CheckName:   "F821",
@@ -82,7 +82,7 @@ func TestRuff_Run(t *testing.T) {
 			fields: fields{
 				CheckPath: "lorem impsum/",
 			},
-			want: &[]tools.ReportFormat{
+			want: &[]tools.Result{
 				{
 					Description: "No such file or directory (os error 2)",
 					CheckName:   "E902",
