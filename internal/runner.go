@@ -6,7 +6,7 @@ import (
 )
 
 // Run function takes a slice of `Tool` and executes the `Run` function of each.
-func Run(tools []tools.Tool) (*report.Reports, []error) {
+func Run(tools []tools.Tool) (report.Reports, []error) {
 	var errors = []error{}
 	var reports = report.Reports{}
 
@@ -18,37 +18,27 @@ func Run(tools []tools.Tool) (*report.Reports, []error) {
 		}
 
 		for _, outputResult := range *result {
-			issueReport := getReport(&reports, outputResult.Location.Path)
-			issues := issueReport.Issues
+			reportData, ok := reports[outputResult.Location.Path]
+			if !ok {
+				reportData = report.Report{
+					FilePath: outputResult.Location.Path,
+					FileHash: "", // TODO: calculate file hash
+					Issues:   []report.Issue{},
+				}
+			}
 
-			*issues = append(*issues, report.Issue{
+			reportData.Issues = append(reportData.Issues, report.Issue{
 				Message: outputResult.Description,
-				Hash:    "", // Calculate hash
+				Hash:    "", // TODO: Calculate hash
 				Lines: report.Lines{
 					Begin: outputResult.Location.Lines.Begin,
 					End:   outputResult.Location.Lines.End,
 				},
 			})
+
+			reports[outputResult.Location.Path] = reportData
 		}
 	}
 
-	return &reports, errors
-}
-
-func getReport(reports *report.Reports, filePath string) *report.Report {
-	for _, report := range *reports {
-		if report.FilePath == filePath {
-			return &report
-		}
-	}
-
-	report := report.Report{
-		FilePath: filePath,
-		FileHash: "", // TODO: Calculate filehash
-		Issues:   &[]report.Issue{},
-	}
-
-	*reports = append(*reports, report)
-
-	return &report
+	return reports, errors
 }

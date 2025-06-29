@@ -1,9 +1,9 @@
 package report
 
 type Report struct {
-	FilePath string   `json:"file_path"`
-	FileHash string   `json:"file_hash"`
-	Issues   *[]Issue `json:"issues"`
+	FilePath string  `json:"file_path"`
+	FileHash string  `json:"file_hash"`
+	Issues   []Issue `json:"issues"`
 }
 
 type Issue struct {
@@ -17,7 +17,7 @@ type Lines struct {
 	End   int `json:"end,omitempty"`
 }
 
-type Reports []Report
+type Reports map[string]Report
 
 func (r Reports) GenerateReport() []byte {
 	return make([]byte, 0)

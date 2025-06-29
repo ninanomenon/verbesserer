@@ -29,9 +29,9 @@ func runAction(ctx context.Context, command *cli.Command) error {
 	toolSlice = append(toolSlice, ruff)
 
 	report, _ := internal.Run(toolSlice)
-	for _, r := range *report {
+	for _, r := range report {
 		fmt.Printf("Reports: %#v\n", r)
-		for _, rr := range *r.Issues {
+		for _, rr := range r.Issues {
 			fmt.Printf("Issue: %#v\n", rr)
 		}
 	}
