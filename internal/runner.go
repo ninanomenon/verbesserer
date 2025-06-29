@@ -1,6 +1,10 @@
 package internal
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"reflect"
+
 	"github.com/ninanomenon/verbesserer/internal/report"
 	"github.com/ninanomenon/verbesserer/internal/tools"
 )
@@ -21,24 +25,37 @@ func Run(tools []tools.Tool) (report.Reports, []error) {
 			reportData, ok := reports[outputResult.Location.Path]
 			if !ok {
 				reportData = report.Report{
-					FilePath: outputResult.Location.Path,
 					FileHash: "", // TODO: calculate file hash
 					Issues:   []report.Issue{},
 				}
 			}
 
-			reportData.Issues = append(reportData.Issues, report.Issue{
+			report := report.Issue{
 				Message: outputResult.Description,
-				Hash:    "", // TODO: Calculate hash
 				Lines: report.Lines{
 					Begin: outputResult.Location.Lines.Begin,
 					End:   outputResult.Location.Lines.End,
 				},
-			})
+			}
+
+			report.Hash = generateFingerprint(report)
+			reportData.Issues = append(reportData.Issues, report)
 
 			reports[outputResult.Location.Path] = reportData
 		}
 	}
 
 	return reports, errors
+}
+
+func generateFingerprint(issue report.Issue) string {
+	hash := sha256.New()
+
+	values := reflect.ValueOf(issue)
+	for i := range values.NumField() {
+		field := values.Field(i)
+		hash.Write([]byte(field.String()))
+	}
+
+	return hex.EncodeToString(hash.Sum(nil))
 }

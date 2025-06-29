@@ -36,5 +36,5 @@ func runAction(ctx context.Context, command *cli.Command) error {
 		}
 	}
 
-	return nil
+	return report.WriteToml()
 }

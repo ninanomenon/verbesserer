@@ -45,7 +45,6 @@ func TestRun(t *testing.T) {
 
 	var reports = report.Reports{}
 	reports["/dev/random"] = report.Report{
-		FilePath: "/dev/random",
 		FileHash: "",
 		Issues: []report.Issue{
 			{
