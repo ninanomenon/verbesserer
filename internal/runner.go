@@ -30,7 +30,7 @@ func Run(tools []tools.Tool) (report.Reports, []error) {
 				}
 			}
 
-			report := report.Issue{
+			issue := report.Issue{
 				Message: outputResult.Description,
 				Lines: report.Lines{
 					Begin: outputResult.Location.Lines.Begin,
@@ -38,8 +38,8 @@ func Run(tools []tools.Tool) (report.Reports, []error) {
 				},
 			}
 
-			report.Hash = generateFingerprint(report)
-			reportData.Issues = append(reportData.Issues, report)
+			issue.Hash = generateFingerprint(issue)
+			reportData.Issues = append(reportData.Issues, issue)
 
 			reports[outputResult.Location.Path] = reportData
 		}
