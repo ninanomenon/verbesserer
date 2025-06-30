@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"reflect"
 
 	"github.com/ninanomenon/verbesserer/internal/report"
 	"github.com/ninanomenon/verbesserer/internal/tools"
@@ -59,11 +58,8 @@ func Execute(tools []tools.Tool) (report.Reports, []error) {
 func generateIssueFingerprint(issue report.Issue) string {
 	hash := sha256.New()
 
-	values := reflect.ValueOf(issue)
-	for i := range values.NumField() {
-		field := values.Field(i)
-		hash.Write([]byte(field.String()))
-	}
+	hash.Write([]byte(issue.Message))
+	hash.Write(fmt.Appendf(nil, "%d-%d", issue.Lines.Begin, issue.Lines.End))
 
 	return hex.EncodeToString(hash.Sum(nil))
 }
