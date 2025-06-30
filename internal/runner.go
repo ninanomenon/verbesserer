@@ -3,14 +3,17 @@ package internal
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
+	"io"
+	"os"
 	"reflect"
 
 	"github.com/ninanomenon/verbesserer/internal/report"
 	"github.com/ninanomenon/verbesserer/internal/tools"
 )
 
-// Run function takes a slice of `Tool` and executes the `Run` function of each.
-func Run(tools []tools.Tool) (report.Reports, []error) {
+// Execute function takes a slice of `Tool` and executes the `Execute` function of each.
+func Execute(tools []tools.Tool) (report.Reports, []error) {
 	var errors = []error{}
 	var reports = report.Reports{}
 
@@ -24,8 +27,13 @@ func Run(tools []tools.Tool) (report.Reports, []error) {
 		for _, outputResult := range *result {
 			reportData, ok := reports[outputResult.Location.Path]
 			if !ok {
+				hash, err := generateFileFingerprint(outputResult.Location.Path)
+				if err != nil {
+					errors = append(errors, err)
+				}
+
 				reportData = report.Report{
-					FileHash: "", // TODO: calculate file hash
+					FileHash: hash,
 					Issues:   []report.Issue{},
 				}
 			}
@@ -38,7 +46,7 @@ func Run(tools []tools.Tool) (report.Reports, []error) {
 				},
 			}
 
-			issue.Hash = generateFingerprint(issue)
+			issue.Hash = generateIssueFingerprint(issue)
 			reportData.Issues = append(reportData.Issues, issue)
 
 			reports[outputResult.Location.Path] = reportData
@@ -48,7 +56,7 @@ func Run(tools []tools.Tool) (report.Reports, []error) {
 	return reports, errors
 }
 
-func generateFingerprint(issue report.Issue) string {
+func generateIssueFingerprint(issue report.Issue) string {
 	hash := sha256.New()
 
 	values := reflect.ValueOf(issue)
@@ -58,4 +66,25 @@ func generateFingerprint(issue report.Issue) string {
 	}
 
 	return hex.EncodeToString(hash.Sum(nil))
+}
+
+func generateFileFingerprint(filePath string) (string, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return "", err
+	}
+	defer func() {
+		err := file.Close()
+		if err != nil {
+			panic(fmt.Sprintf("Fatal error while calculating file hash: %s", err.Error()))
+		}
+	}()
+
+	hash := sha256.New()
+	_, err = io.Copy(hash, file)
+	if err != nil {
+		return "", err
+	}
+
+	return hex.EncodeToString(hash.Sum(nil)), nil
 }

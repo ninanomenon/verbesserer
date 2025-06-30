@@ -79,7 +79,7 @@ func TestRun(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := Run(tt.args.tools)
+			got, got1 := Execute(tt.args.tools)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Run() got = %v, want %v", got, tt.want)
 			}

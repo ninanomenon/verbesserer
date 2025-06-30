@@ -21,6 +21,5 @@ type Lines struct {
 type Tool interface {
 	Name() string
 	Description() string
-	Preflight() error
 	Run() (*[]Result, error)
 }

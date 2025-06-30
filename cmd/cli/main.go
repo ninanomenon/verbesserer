@@ -16,6 +16,14 @@ func init() {
 		Name:     "Verbesserer",
 		Usage:    "makes it easier to make incremental improvements to your codebase!",
 		Commands: []*cli.Command{commands.CheckCommand()},
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "config-path",
+				Aliases: []string{"cp"},
+				Value:   "",
+				Usage:   "Customize path to the config file (.verbesserer.toml). Default: Current working directory.",
+			},
+		},
 	}
 }
 
