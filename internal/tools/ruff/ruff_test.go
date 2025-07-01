@@ -1,15 +1,16 @@
-package ruff
+package ruff_test
 
 import (
 	"reflect"
 	"testing"
 
 	"github.com/ninanomenon/verbesserer/internal/tools"
+	"github.com/ninanomenon/verbesserer/internal/tools/ruff"
 )
 
 func TestRuff_Name(t *testing.T) {
 	t.Run("check name", func(t *testing.T) {
-		r := Ruff{CheckPath: ""}
+		r := ruff.Ruff{CheckPath: ""}
 		if got := r.Name(); got != "Ruff" {
 			t.Errorf("Ruff.Name() = %v, want Ruff", got)
 		}
@@ -18,7 +19,7 @@ func TestRuff_Name(t *testing.T) {
 
 func TestRuff_Description(t *testing.T) {
 	t.Run("check description", func(t *testing.T) {
-		r := Ruff{CheckPath: ""}
+		r := ruff.Ruff{CheckPath: ""}
 		if got := r.Description(); got != "An extremely fast Python linter and code formatter." {
 			t.Errorf("Ruff.Description() = %v, want %v", got, "An extremely fast Python linter and code formatter.")
 		}
@@ -27,7 +28,7 @@ func TestRuff_Description(t *testing.T) {
 
 func TestRuff_Preflight(t *testing.T) {
 	t.Run("FIXME", func(t *testing.T) {
-		_ = Ruff{CheckPath: ""}
+		_ = ruff.Ruff{CheckPath: ""}
 	})
 }
 
@@ -103,12 +104,13 @@ func TestRuff_Run(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := Ruff{
+			r := ruff.Ruff{
 				CheckPath: tt.fields.CheckPath,
 			}
 			got, err := r.Run()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Ruff.Run() error = %v, wantErr %v", err, tt.wantErr)
+
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {

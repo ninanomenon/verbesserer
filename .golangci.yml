@@ -1,0 +1,60 @@
+version: "2"
+linters:
+  default: fast
+  disable:
+    - wsl
+    - wsl_v5
+    - depguard
+    - godox
+    - funlen
+    - wrapcheck
+    - whitespace
+    - usestdlibvars
+    - unconvert
+    - revive
+    - recvcheck
+    - predeclared
+    - perfsprint
+    - nestif
+    - mnd
+    - misspell
+    - lll
+    - importas
+    - iface
+    - grouper
+    - gosec
+    - gosmopolitan
+    - gocritic
+    - goconst
+    - gochecknoglobals
+    - funcorder
+    - forcetypeassert
+    - exptostd 
+    - exhaustruct
+    - exhaustive
+    - errorlint
+    - errname
+    - errchkjson
+    - err113
+    - embeddedstructfieldcheck
+    - durationcheck
+    - dupl
+    - copyloopvar
+    - containedctx
+    - contextcheck
+    - asciicheck
+    - asasalint
+
+formatters:
+  enable: 
+    - golines
+    - gofmt
+    - gofumpt
+    - goimports
+
+  settings:
+    golines:
+      max-len: 120
+      tab-len: 4
+      reformat-tags: true
+      chain-split-dots: true

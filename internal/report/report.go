@@ -6,6 +6,8 @@ import (
 	"github.com/pelletier/go-toml/v2"
 )
 
+const userWrite = 600
+
 type Report struct {
 	FileHash string  `toml:"file_hash"`
 	Issues   []Issue `toml:"issues"`
@@ -30,7 +32,7 @@ func (r Reports) WriteToml() error {
 		return err
 	}
 
-	err = os.WriteFile(".verbesserer.result", bytes, 0644)
+	err = os.WriteFile(".verbesserer.result", bytes, userWrite)
 	if err != nil {
 		return err
 	}

@@ -1,9 +1,10 @@
-package internal
+package internal_test
 
 import (
 	"reflect"
 	"testing"
 
+	"github.com/ninanomenon/verbesserer/internal"
 	"github.com/ninanomenon/verbesserer/internal/report"
 	"github.com/ninanomenon/verbesserer/internal/tools"
 )
@@ -13,12 +14,15 @@ type mockedRunner struct{}
 func (mockedrunner mockedRunner) Name() string {
 	panic("not implemented") // TODO: Implement
 }
+
 func (mockedrunner mockedRunner) Description() string {
 	panic("not implemented") // TODO: Implement
 }
+
 func (mockedrunner mockedRunner) Preflight() error {
 	panic("not implemented") // TODO: Implement
 }
+
 func (mockedrunner mockedRunner) Run() (*[]tools.Result, error) {
 	return &[]tools.Result{
 		{
@@ -38,12 +42,12 @@ func (mockedrunner mockedRunner) Run() (*[]tools.Result, error) {
 }
 
 func TestRun(t *testing.T) {
-	var runner = mockedRunner{}
+	runner := mockedRunner{}
 
 	var toolSlice []tools.Tool
 	toolSlice = append(toolSlice, runner)
 
-	var reports = report.Reports{}
+	reports := report.Reports{}
 	reports["/dev/random"] = report.Report{
 		FileHash: "",
 		Issues: []report.Issue{
@@ -79,7 +83,7 @@ func TestRun(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := Execute(tt.args.tools)
+			got, got1 := internal.Execute(tt.args.tools)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Run() got = %v, want %v", got, tt.want)
 			}

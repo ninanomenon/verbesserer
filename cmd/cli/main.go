@@ -11,7 +11,7 @@ import (
 
 var cmd *cli.Command
 
-func init() {
+func executeCli() {
 	cmd = &cli.Command{
 		Name:     "Verbesserer",
 		Usage:    "makes it easier to make incremental improvements to your codebase!",
@@ -25,14 +25,12 @@ func init() {
 			},
 		},
 	}
-}
 
-func run() {
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
 		log.Fatal(err)
 	}
 }
 
 func main() {
-	run()
+	executeCli()
 }

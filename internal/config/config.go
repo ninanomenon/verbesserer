@@ -43,6 +43,7 @@ func LoadConfig(path string) (Config, error) {
 	if err != nil {
 		if os.IsNotExist(err) {
 			config.fillEmptyWithDefaults()
+
 			return config, nil
 		}
 
@@ -57,5 +58,4 @@ func LoadConfig(path string) (Config, error) {
 	config.fillEmptyWithDefaults()
 
 	return config, nil
-
 }

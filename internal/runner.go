@@ -13,13 +13,14 @@ import (
 
 // Execute function takes a slice of `Tool` and executes the `Execute` function of each.
 func Execute(tools []tools.Tool) (report.Reports, []error) {
-	var errors = []error{}
-	var reports = report.Reports{}
+	errors := []error{}
+	reports := report.Reports{}
 
 	for _, tool := range tools {
 		result, err := tool.Run()
 		if err != nil {
 			errors = append(errors, err)
+
 			continue
 		}
 

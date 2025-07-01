@@ -20,7 +20,7 @@ func (r *Ruff) Description() string {
 	return "An extremely fast Python linter and code formatter."
 }
 
-// Run - runs `ruff check` and returns a code quality report
+// Run - runs `ruff check` and returns a code quality report.
 func (r *Ruff) Run() (*[]tools.Result, error) {
 	path, err := exec.LookPath("ruff")
 	if err != nil {
