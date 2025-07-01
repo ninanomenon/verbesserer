@@ -5,13 +5,23 @@ import (
 	"log"
 	"os"
 
+	"github.com/ninanomenon/verbesserer/cmd/cli/commands"
 	"github.com/urfave/cli/v3"
 )
 
-func run() {
+func executeCli() {
 	cmd := &cli.Command{
-		Name:  "Verbesserer",
-		Usage: "makes it easier to make incremental improvements to your codebase!",
+		Name:     "Verbesserer",
+		Usage:    "makes it easier to make incremental improvements to your codebase!",
+		Commands: []*cli.Command{commands.CheckCommand()},
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "config-path",
+				Aliases: []string{"cp"},
+				Value:   "",
+				Usage:   "Customize path to the config file (.verbesserer.toml). Default: Current working directory.",
+			},
+		},
 	}
 
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
@@ -20,5 +30,5 @@ func run() {
 }
 
 func main() {
-	run()
+	executeCli()
 }
