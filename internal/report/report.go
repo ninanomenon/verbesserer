@@ -1,6 +1,7 @@
 package report
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/pelletier/go-toml/v2"
@@ -29,12 +30,12 @@ type Reports map[string]Report
 func (r Reports) WriteToml() error {
 	bytes, err := toml.Marshal(r)
 	if err != nil {
-		return err
+		return fmt.Errorf("report writer: %w", err)
 	}
 
 	err = os.WriteFile(".verbesserer.result", bytes, userWrite)
 	if err != nil {
-		return err
+		return fmt.Errorf("report writer: %w", err)
 	}
 
 	return nil

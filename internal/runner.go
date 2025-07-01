@@ -68,19 +68,19 @@ func generateIssueFingerprint(issue report.Issue) string {
 func generateFileFingerprint(filePath string) (string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("runner error: %w", err)
 	}
 	defer func() {
 		err := file.Close()
 		if err != nil {
-			panic(fmt.Sprintf("Fatal error while calculating file hash: %s", err.Error()))
+			panic("Fatal error while calculating file hash: %s" + err.Error())
 		}
 	}()
 
 	hash := sha256.New()
 	_, err = io.Copy(hash, file)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("runner error: %w", err)
 	}
 
 	return hex.EncodeToString(hash.Sum(nil)), nil

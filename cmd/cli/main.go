@@ -9,10 +9,8 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var cmd *cli.Command
-
 func executeCli() {
-	cmd = &cli.Command{
+	cmd := &cli.Command{
 		Name:     "Verbesserer",
 		Usage:    "makes it easier to make incremental improvements to your codebase!",
 		Commands: []*cli.Command{commands.CheckCommand()},

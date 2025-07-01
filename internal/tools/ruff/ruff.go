@@ -24,7 +24,7 @@ func (r *Ruff) Description() string {
 func (r *Ruff) Run() (*[]tools.Result, error) {
 	path, err := exec.LookPath("ruff")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("ruff runner: %w", err)
 	}
 
 	// we use the output format gitlab here to parse the json later
@@ -39,7 +39,7 @@ func (r *Ruff) Run() (*[]tools.Result, error) {
 	var report []tools.Result
 	err = json.Unmarshal(output, &report)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("ruff runner: %w", err)
 	}
 
 	return &report, nil

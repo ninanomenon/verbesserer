@@ -5,8 +5,11 @@ linters:
     - wsl
     - wsl_v5
     - depguard
-    - godox
     - funlen
+    - godox
+    - gosec
+  
+  enable: 
     - wrapcheck
     - whitespace
     - usestdlibvars
@@ -22,7 +25,6 @@ linters:
     - importas
     - iface
     - grouper
-    - gosec
     - gosmopolitan
     - gocritic
     - goconst
@@ -30,7 +32,6 @@ linters:
     - funcorder
     - forcetypeassert
     - exptostd 
-    - exhaustruct
     - exhaustive
     - errorlint
     - errname
@@ -44,6 +45,14 @@ linters:
     - contextcheck
     - asciicheck
     - asasalint
+
+  settings:
+    revive:
+      enable-all-rules: false
+      rules:
+        - name: package-comments
+          disabled: true
+
 
 formatters:
   enable: 

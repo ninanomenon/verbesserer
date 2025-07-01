@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -9,7 +10,7 @@ import (
 
 const configFileName = ".verbesserer.toml"
 
-var defaultCheckPath = "./"
+const defaultCheckPath = "./"
 
 type Config struct {
 	Ruff Ruff `toml:"ruff,omitempty"`
@@ -22,12 +23,12 @@ func (c *Config) fillEmptyWithDefaults() {
 type Ruff struct {
 	// The path of the code that should be checked
 	// defaults to the current working directory.
-	CheckPath *string `toml:"check_path,omitempty"`
+	CheckPath string `toml:"check_path,omitempty"`
 }
 
 func (r *Ruff) fillEmptyWithDefaults() {
-	if r.CheckPath == nil {
-		r.CheckPath = &defaultCheckPath
+	if r.CheckPath == "" {
+		r.CheckPath = defaultCheckPath
 	}
 }
 
@@ -47,12 +48,12 @@ func LoadConfig(path string) (Config, error) {
 			return config, nil
 		}
 
-		return Config{}, err
+		return Config{}, fmt.Errorf("load config: %w", err)
 	}
 
 	err = toml.Unmarshal(file, &config)
 	if err != nil {
-		return Config{}, err
+		return Config{}, fmt.Errorf("load config: %w", err)
 	}
 
 	config.fillEmptyWithDefaults()

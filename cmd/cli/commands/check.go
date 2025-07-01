@@ -25,11 +25,11 @@ func runAction(ctx context.Context, command *cli.Command) error {
 	configPath := command.String("config-path")
 	config, err := config.LoadConfig(configPath)
 	if err != nil {
-		return err
+		return fmt.Errorf("run action: %w", err)
 	}
 
 	ruff := &ruff.Ruff{
-		CheckPath: *config.Ruff.CheckPath,
+		CheckPath: config.Ruff.CheckPath,
 	}
 
 	var toolSlice []tools.Tool
@@ -49,5 +49,10 @@ func runAction(ctx context.Context, command *cli.Command) error {
 		}
 	}
 
-	return report.WriteToml()
+	err = report.WriteToml()
+	if err != nil {
+		return fmt.Errorf("run action: %w", err)
+	}
+
+	return nil
 }
